@@ -8,10 +8,10 @@
     <owners>$author$</owners>
     <licenseUrl>https://github.com/vvenegasv/octopus/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/vvenegasv/octopus/</projectUrl>
-	<iconUrl>https://github.com/vvenegasv/octopus/blob/master/src/Octopus/ThirdParty/octopus.png?raw=true</iconUrl>
+	<iconUrl>https://github.com/vvenegasv/octopus/blob/master/src/ThirdParty/octopus.png?raw=true</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Primera versión de Octopus</releaseNotes>
+    <releaseNotes>Se agrega icono</releaseNotes>
     <copyright>Copyright © 2014 - 2017 Vladimir Venegas</copyright>
     <tags>ConcurrentBag Identity Constraint</tags>
   </metadata>
