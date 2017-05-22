@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Octopus.Tester.Factories;
 using System.Linq;
 
-namespace Octopus.Tester
+namespace Octopush.Tester
 {
     [TestClass]
     public class UnitTest1
@@ -14,7 +14,7 @@ namespace Octopus.Tester
         [TestMethod]
         public void TestIdentity()
         {
-            var data = new OctopusCollection<DummyPerson, int>(x => x.PersonId);
+            var data = new OctopushCollection<DummyPerson, int>(x => x.PersonId);
             var tasks = new List<Task>();
 
             //Make 20 threads, with 100 element each one.
@@ -33,7 +33,7 @@ namespace Octopus.Tester
         [TestMethod]
         public void TestUniqueKey()
         {
-            var data = new OctopusCollection<DummyPerson, int>(x => x.PersonId);
+            var data = new OctopushCollection<DummyPerson, int>(x => x.PersonId);
             data.AddUniqueField(x => x.BirthDate);
             data.AddUniqueField(x => x.Name);
 
@@ -63,7 +63,7 @@ namespace Octopus.Tester
         [TestMethod]
         public void TestWithReadAndAsyncAdds()
         {
-            var data = new OctopusCollection<DummyPerson, int>(x => x.PersonId);
+            var data = new OctopushCollection<DummyPerson, int>(x => x.PersonId);
             data.AddUniqueField(x => x.BirthDate);
             data.AddUniqueField(x => x.Name);
 
@@ -96,7 +96,7 @@ namespace Octopus.Tester
         [TestMethod]
         public void TestWithReadRemoveAndAsyncAdds()
         {
-            var data = new OctopusCollection<DummyPerson, int>(x => x.PersonId);
+            var data = new OctopushCollection<DummyPerson, int>(x => x.PersonId);
             data.AddUniqueField(x => x.BirthDate);
             data.AddUniqueField(x => x.Name);
 

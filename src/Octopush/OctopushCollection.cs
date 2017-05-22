@@ -7,16 +7,16 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading;
 
-namespace Octopus
+namespace Octopush
 {
-    public class OctopusCollection<TModel, TIdentity> : IProducerConsumerCollection<TModel>, IEnumerable<TModel>, ICollection, IEnumerable where TIdentity : struct
+    public class OctopushCollection<TModel, TIdentity> : IProducerConsumerCollection<TModel>, IEnumerable<TModel>, ICollection, IEnumerable where TIdentity : struct
     {
         private readonly IDictionary<string, Type> _uniqueFields;
         private readonly Expression<Func<TModel, TIdentity>> _identityField;
         private Object _syncRoot;
         ICollection<TModel> _items;
 
-        public OctopusCollection()
+        public OctopushCollection()
         {
             _uniqueFields = new Dictionary<string, Type>();
             _syncRoot = new Object();
@@ -24,7 +24,7 @@ namespace Octopus
             _items = new List<TModel>();
         }
 
-        protected OctopusCollection(ICollection<TModel> collection)
+        protected OctopushCollection(ICollection<TModel> collection)
         {
             _uniqueFields = new Dictionary<string, Type>();
             _syncRoot = new Object();
@@ -32,7 +32,7 @@ namespace Octopus
             _items = collection;
         }
 
-        public OctopusCollection(Expression<Func<TModel, TIdentity>> identityField) : base()
+        public OctopushCollection(Expression<Func<TModel, TIdentity>> identityField) : base()
         {
             _uniqueFields = new Dictionary<string, Type>();
             _syncRoot = new Object();
@@ -40,7 +40,7 @@ namespace Octopus
             _items = new List<TModel>();
         }
 
-        public OctopusCollection(ICollection<TModel> collection, Expression<Func<TModel, TIdentity>> identityField) : base()
+        public OctopushCollection(ICollection<TModel> collection, Expression<Func<TModel, TIdentity>> identityField) : base()
         {
             _uniqueFields = new Dictionary<string, Type>();
             _syncRoot = new Object();

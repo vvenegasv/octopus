@@ -6,8 +6,8 @@
     <ProjectGuid>{C43AB57A-A206-426E-A2DE-949E5AA8D15D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Octopus.Tester</RootNamespace>
-    <AssemblyName>Octopus.Tester</AssemblyName>
+    <RootNamespace>Octopush.Tester</RootNamespace>
+    <AssemblyName>Octopush.Tester</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -56,9 +56,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Octopus\Octopus.csproj">
+    <ProjectReference Include="..\Octopush\Octopush.csproj">
       <Project>{9696c575-bd48-41c5-8dba-e8c1ee52ee6d}</Project>
-      <Name>Octopus</Name>
+      <Name>Octopush</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
