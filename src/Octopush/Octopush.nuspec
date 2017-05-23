@@ -11,7 +11,7 @@
 	<iconUrl>https://github.com/vvenegasv/octopus/blob/master/src/ThirdParty/octopus.png?raw=true</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Se agrega icono</releaseNotes>
+    <releaseNotes>Se establece solo compatibilidad para listas sin thread safe, debido a algunos errores. Se incorporará en versiones futuras</releaseNotes>
     <copyright>Copyright © 2014 - 2017 Vladimir Venegas</copyright>
     <tags>ConcurrentBag Identity Constraint</tags>
   </metadata>
