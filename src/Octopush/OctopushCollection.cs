@@ -9,87 +9,25 @@ using System.Threading;
 
 namespace Octopush
 {
-    public class OctopushCollection<TModel, TIdentity> : IProducerConsumerCollection<TModel>, IEnumerable<TModel>, ICollection, IEnumerable where TIdentity : struct
+    public class OctopushCollection<TModel, TIdentity> : IList<TModel>, ICollection<TModel>, IList, ICollection, IReadOnlyList<TModel>, IReadOnlyCollection<TModel>, IEnumerable<TModel>, IEnumerable where TIdentity : struct
     {
         private readonly IDictionary<string, Type> _uniqueFields;
-        private readonly Expression<Func<TModel, TIdentity>> _identityField;
-        private Object _syncRoot;
-        ICollection<TModel> _items;
-
-        public OctopushCollection()
-        {
-            _uniqueFields = new Dictionary<string, Type>();
-            _syncRoot = new Object();
-            _identityField = null;
-            _items = new List<TModel>();
-        }
-
-        protected OctopushCollection(ICollection<TModel> collection)
-        {
-            _uniqueFields = new Dictionary<string, Type>();
-            _syncRoot = new Object();
-            _identityField = null;
-            _items = collection;
-        }
-
-        public OctopushCollection(Expression<Func<TModel, TIdentity>> identityField) : base()
-        {
-            _uniqueFields = new Dictionary<string, Type>();
-            _syncRoot = new Object();
-            _identityField = identityField;
-            _items = new List<TModel>();
-        }
-
-        public OctopushCollection(ICollection<TModel> collection, Expression<Func<TModel, TIdentity>> identityField) : base()
-        {
-            _uniqueFields = new Dictionary<string, Type>();
-            _syncRoot = new Object();
-            _identityField = identityField;
-            _items = collection;
-        }
-
-        public void Add(TModel item)
-        {
-            TryAdd(item);
-        }
-
-        public void Clear()
-        {
-            lock (_syncRoot)
-            {
-                _items.Clear();
-            }
-        }
-
-        public bool Contains(TModel item)
-        {
-            return _items.Contains(item);
-        }
-
-        public void CopyTo(TModel[] array, int arrayIndex)
-        {
-            _items.CopyTo(array, arrayIndex);
-        }
+        private readonly Expression<Func<TModel, TIdentity>> _identityField;       
+        IList<TModel> _items;
 
         public int Count
         {
-            get { return _items.Count; }
-        }
-
-        public bool IsReadOnly
-        {
-            get { return false; }
+            get
+            {
+                return _items.Count();
+            }
         }
 
         public object SyncRoot
         {
             get
             {
-                if (this._syncRoot == null)
-                {
-                    Interlocked.CompareExchange(ref this._syncRoot, new object(), null);
-                }
-                return this._syncRoot;
+                throw new NotImplementedException();
             }
         }
 
@@ -101,57 +39,80 @@ namespace Octopush
             }
         }
 
-        public bool Remove(TModel item)
+        public bool IsReadOnly
         {
-            if (!_items.Any())
-                return false;
-
-            lock (_syncRoot)
+            get
             {
-                return _items.Remove(item);
+                return _items.IsReadOnly;
             }
         }
 
-        public bool TryAdd(TModel item)
+        public bool IsFixedSize
         {
-            PropertyInfo prop = null;
-            if (_identityField != null)
-                prop = GetPropertyInfo(item, _identityField);
-
-
-            lock (_syncRoot)
+            get
             {
-                if (CanAddElement(item))
-                {
-                    if (prop != null)
-                        prop.SetValue(item, _items.Count() + 1);
-                    _items.Add(item);
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public bool TryTake(out TModel item)
-        {
-            if (_items.Any())
-            {
-                item = Activator.CreateInstance<TModel>();
                 return false;
             }
+        }
 
-            lock (_syncRoot)
+        object IList.this[int index]
+        {
+            get
             {
-                item = _items.FirstOrDefault();
-                _items.Remove(item);
-                return true;
+                return _items[index];
+            }
+
+            set
+            {
+                _items[index] = (TModel)value;
             }
         }
 
-        public TModel[] ToArray()
+        public TModel this[int index]
         {
-            return _items.ToArray();
+            get
+            {
+                return _items[index];
+            }
+
+            set
+            {
+                _items[index] = value;
+            }
+        }
+
+        public OctopushCollection()
+        {
+            _uniqueFields = new Dictionary<string, Type>();            
+            _identityField = null;
+            _items = new List<TModel>();
+        }
+
+        protected OctopushCollection(ICollection<TModel> collection)
+        {
+            _uniqueFields = new Dictionary<string, Type>();
+            _identityField = null;
+            if (collection != null)
+                _items = collection.ToList();
+            else
+                _items = new List<TModel>();
+        }
+
+        public OctopushCollection(Expression<Func<TModel, TIdentity>> identityField) : base()
+        {
+            _uniqueFields = new Dictionary<string, Type>();
+            _identityField = identityField;
+            _items = new List<TModel>();
+        }
+
+        public OctopushCollection(ICollection<TModel> collection, Expression<Func<TModel, TIdentity>> identityField) : base()
+        {
+            _uniqueFields = new Dictionary<string, Type>();
+            _identityField = identityField;
+            if (collection != null)
+                _items = collection.ToList();
+            else
+                _items = new List<TModel>();
         }
 
         public void CopyTo(Array array, int index)
@@ -164,15 +125,65 @@ namespace Octopush
             ((ICollection<TModel>)_items).CopyTo(typedArray, index);
         }
 
-        public IEnumerator<TModel> GetEnumerator()
+        public IEnumerator GetEnumerator()
         {
             return _items.GetEnumerator();
         }
 
-        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        IEnumerator<TModel> IEnumerable<TModel>.GetEnumerator()
         {
             return _items.GetEnumerator();
         }
+
+        public int IndexOf(TModel item)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Insert(int index, TModel item)
+        {
+            _items.Insert(index, item);
+        }
+
+        public void RemoveAt(int index)
+        {
+            _items.RemoveAt(index);            
+        }
+
+        public void Add(TModel item)
+        {
+            PropertyInfo prop = null;
+            if (_identityField != null)
+                prop = GetPropertyInfo(item, _identityField);
+
+            if (CanAddElement(item))
+            {
+                if (prop != null)
+                    prop.SetValue(item, _items.Count() + 1);
+                _items.Add(item);            
+            }            
+        }
+
+        public void Clear()
+        {
+            _items.Clear();
+        }
+
+        public bool Contains(TModel item)
+        {
+            return _items.Contains(item);
+        }
+
+        public void CopyTo(TModel[] array, int arrayIndex)
+        {
+            _items.CopyTo(array, arrayIndex);
+        }
+
+        public bool Remove(TModel item)
+        {
+            return _items.Remove(item);
+        }
+
 
         /// <summary>
         /// Agrega un campo a la clave única de los registros del vector
@@ -233,6 +244,43 @@ namespace Octopush
                     Expression.Property(param, paramName),
                     Expression.Constant(value)
                 ), param);
+        }
+
+        public int Add(object value)
+        {
+            PropertyInfo prop = null;
+            if (_identityField != null)
+                prop = GetPropertyInfo((TModel)value, _identityField);
+
+            if (CanAddElement((TModel)value))
+            {
+                if (prop != null)
+                    prop.SetValue(value, _items.Count() + 1);
+                _items.Add((TModel)value);
+                return _items.IndexOf((TModel)value);
+            }
+
+            return -1;
+        }
+
+        public bool Contains(object value)
+        {
+            return _items.Contains((TModel)value);
+        }
+
+        public int IndexOf(object value)
+        {
+            return _items.IndexOf((TModel)value);
+        }
+
+        public void Insert(int index, object value)
+        {
+            _items.Insert(index, (TModel)value);
+        }
+
+        public void Remove(object value)
+        {
+            _items.Remove((TModel)value);
         }
     }
 }
